@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		931855312A9C1C950055157D /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931855302A9C1C950055157D /* Server.swift */; };
 		931AC6FE2A940006003A6E38 /* MagicMovementApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931AC6FD2A940006003A6E38 /* MagicMovementApp.swift */; };
 		931AC7002A940006003A6E38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931AC6FF2A940006003A6E38 /* ContentView.swift */; };
 		931AC7022A940007003A6E38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931AC7012A940007003A6E38 /* Assets.xcassets */; };
@@ -14,12 +15,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		931855302A9C1C950055157D /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		931AC6FA2A940006003A6E38 /* MagicMovement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicMovement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931AC6FD2A940006003A6E38 /* MagicMovementApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicMovementApp.swift; sourceTree = "<group>"; };
 		931AC6FF2A940006003A6E38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		931AC7012A940007003A6E38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		931AC7042A940007003A6E38 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		931AC7062A940007003A6E38 /* MagicMovement.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MagicMovement.entitlements; sourceTree = "<group>"; };
+		939A4F122A995283001804B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +55,10 @@
 		931AC6FC2A940006003A6E38 /* MagicMovement */ = {
 			isa = PBXGroup;
 			children = (
+				939A4F122A995283001804B2 /* Info.plist */,
 				931AC6FD2A940006003A6E38 /* MagicMovementApp.swift */,
 				931AC6FF2A940006003A6E38 /* ContentView.swift */,
+				931855302A9C1C950055157D /* Server.swift */,
 				931AC7012A940007003A6E38 /* Assets.xcassets */,
 				931AC7062A940007003A6E38 /* MagicMovement.entitlements */,
 				931AC7032A940007003A6E38 /* Preview Content */,
@@ -97,7 +102,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					931AC6F92A940006003A6E38 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -140,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				931AC7002A940006003A6E38 /* ContentView.swift in Sources */,
+				931855312A9C1C950055157D /* Server.swift in Sources */,
 				931AC6FE2A940006003A6E38 /* MagicMovementApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,9 +186,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -240,9 +248,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -269,11 +279,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MagicMovement/Preview Content\"";
 				DEVELOPMENT_TEAM = 6Q95QLZS6W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MagicMovement/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -296,11 +308,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MagicMovement/Preview Content\"";
 				DEVELOPMENT_TEAM = 6Q95QLZS6W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MagicMovement/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
