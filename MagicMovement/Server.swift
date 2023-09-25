@@ -23,17 +23,26 @@ class Server: ObservableObject {
     @Published var listening: Bool = true
     
 
-    /// Use this init or the one that takes an Int to start the listener
-    init() {
+    func startStopListener() {
+            if let listener = self.listener {
+                    self.listener = nil
+                    self.stop(listener: listener)
+            } else {
+                    self.listener = self.start()
+            }
+    }
+    
+    func start() -> NWListener? {
         let params = NWParameters.udp
         params.allowFastOpen = true
-
-        self.listener = try? NWListener(using: params)
-        self.listener?.service = NWListener.Service (type: "_mouse._udp")
-        self.listener?.stateUpdateHandler = { update in
+        params.allowLocalEndpointReuse = true
+        let listener = try? NWListener(using: params)
+        listener?.service = NWListener.Service (type: "_mouse._udp")
+        listener?.stateUpdateHandler = { update in
             switch update {
             case .ready:
                 self.isReady = true
+                
                 print("Listener connected to port")
             case .failed, .cancelled:
                 // Announce we are no longer able to listen
@@ -42,16 +51,20 @@ class Server: ObservableObject {
                     self.isReady = false
                 }
                 print("Listener disconnected from port ")
+                             
             default:
                 print("Listener connecting to port ...")
             }
         }
-        self.listener?.newConnectionHandler = { connection in
+        listener?.newConnectionHandler = { connection in
             print("Listener receiving new message")
             self.createConnection(connection: connection)
         }
-        self.listener?.start(queue: self.queue)
+        listener?.start(queue: self.queue)
+        return listener
     }
+    
+
     
     func createConnection(connection: NWConnection) {
         self.connection = connection
@@ -66,7 +79,6 @@ class Server: ObservableObject {
                 DispatchQueue.main.async {
                 self.listener?.cancel()
                 // Announce we are no longer able to listen
-                
                     self.listening = false
                 }
             default:
@@ -90,7 +102,7 @@ class Server: ObservableObject {
                 if let newString = String(data: data, encoding: .utf8) {
                     self.messageReceived = newString
                 }
-
+                
             }
 
             if self.listening {
@@ -102,5 +114,13 @@ class Server: ObservableObject {
     func cancel() {
         self.listening = false
         self.connection?.cancel()
+    }
+    
+    func stop(listener: NWListener) {
+            print("will stop")
+            listener.stateUpdateHandler = nil
+            listener.newConnectionHandler = nil
+            listener.cancel()
+            print("did stop")
     }
 }
