@@ -15,11 +15,12 @@ class Server: ObservableObject {
     var listener: NWListener?
     var connection: NWConnection?
     var queue = DispatchQueue.global(qos: .userInitiated)
-    /// New data will be place in this variable to be received by observers
-   @Published var messageReceived: String = ""
-    /// When there is an active listening NWConnection this will be `true`
-    @Published private(set) var isReady: Bool = false
-    /// Default value `true`, this will become false if the UDPListener ceases listening for any reason
+    
+    private(set) var isReady: Bool = false
+    
+    private var liftBeforePoint : CGPoint = CGPoint(x: 800, y: 600)
+    
+
     @Published var listening: Bool = true
     
 
@@ -36,6 +37,7 @@ class Server: ObservableObject {
         let params = NWParameters.udp
         params.allowFastOpen = true
         params.allowLocalEndpointReuse = true
+        params.includePeerToPeer = true
         let listener = try? NWListener(using: params)
         listener?.service = NWListener.Service (type: "_mouse._udp")
         listener?.stateUpdateHandler = { update in
@@ -100,7 +102,7 @@ class Server: ObservableObject {
             }
             DispatchQueue.main.async {
                 if let newString = String(data: data, encoding: .utf8) {
-                    self.messageReceived = newString
+                    self.processTheMessage(message: newString)
                 }
                 
             }
@@ -109,6 +111,84 @@ class Server: ObservableObject {
                 self.receive()
             }
         }
+    }
+    
+    func processTheMessage(message: String){
+        if message == "lifted" {
+            liftBeforePoint =  NSEvent.mouseLocation
+            print("Lifted", liftBeforePoint)
+        }  else if message == "tapped" {
+            leftClick()
+        } else if message == "rightClicked" {
+            rightClick()
+        }
+        else {
+            processReceivedMessage(message: message)
+        }
+        
+    }
+    
+    
+    func leftClick() {
+        var mouseLoc = liftBeforePoint
+        mouseLoc.y = NSHeight(NSScreen.screens[0].frame) - mouseLoc.y;
+        
+            if let eventDown = CGEvent(mouseEventSource: nil, mouseType: .leftMouseDown, mouseCursorPosition: mouseLoc , mouseButton: .left) {
+               print("LeftClicked")
+                eventDown.post(tap: .cghidEventTap)
+            } else {
+                print("Couldn't Create Event")
+            }
+            if let eventUp = CGEvent(mouseEventSource: nil, mouseType: .leftMouseUp, mouseCursorPosition: mouseLoc , mouseButton: .left) {
+                print("LeftReleased")
+                eventUp.post(tap: .cghidEventTap)
+            } else {
+                print("Down event couldn't create")
+            }
+            
+        print("Left Event Done")
+            
+    }
+
+    func rightClick() {
+        var mouseLoc = liftBeforePoint
+        mouseLoc.y = NSHeight(NSScreen.screens[0].frame) - mouseLoc.y;
+        if let eventDown = CGEvent(mouseEventSource: nil, mouseType: .rightMouseDown, mouseCursorPosition: mouseLoc , mouseButton: .right) {
+           print("LeftClicked")
+            eventDown.post(tap: .cghidEventTap)
+        } else {
+            print("Couldn't Create Event")
+        }
+        if let eventUp = CGEvent(mouseEventSource: nil, mouseType: .rightMouseUp, mouseCursorPosition: mouseLoc , mouseButton: .right) {
+            print("LeftReleased")
+            eventUp.post(tap: .cghidEventTap)
+        } else {
+            print("Down event couldn't create")
+        }
+    }
+    
+    
+
+    
+    
+    func processReceivedMessage(message: String) {
+        let components = message.components(separatedBy: ",")
+        if components.count == 2, let x = Double(components[0]), let y = Double(components[1]) {
+            moveMousePointer(to: CGPoint(x: x*3, y: y*1.5))
+//            CGDisplayMoveCursorToPoint(0, CGPoint(x:x, y: y))
+//            lastMovedPoint = CGPoint(x:x, y: y)
+        }
+        else {
+            print("Not Working")
+        }
+    }
+    
+    func moveMousePointer(to point: CGPoint) {
+        var mouseLoc = liftBeforePoint
+        mouseLoc.y = NSHeight(NSScreen.screens[0].frame) - mouseLoc.y;
+        let newLoc = CGPoint(x: mouseLoc.x + point.x, y: mouseLoc.y + point.y)
+        CGDisplayMoveCursorToPoint(0, newLoc)
+        
     }
     
     func cancel() {
